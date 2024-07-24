@@ -2,13 +2,17 @@ import base64
 import requests
 from flask import Flask, render_template, request, redirect, url_for, session
 import json
+import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'  # Replace with a secure secret key
 
-# Spotify API credentials
-CLIENT_ID = '37d5359e52124e29b39dd169c46bb4ce'
-CLIENT_SECRET = '23cec400f6a141f6a853476a3c7390b1'
+load_dotenv()
+
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REDIRECT_URI = 'http://127.0.0.1:5000/callback'  # Ensure this matches your Spotify app settings
 SCOPE = 'playlist-modify-public'
 
