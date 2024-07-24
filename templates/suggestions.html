@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestions</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1db954, #000000);  /* Gradient background from Spotify green to black */
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);  /* Slightly transparent white background for the container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);  /* Box shadow for better contrast */
+            border-radius: 10px;
+            color: #000;  /* Black text color for the container */
+        }
+        .suggestion {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .suggestion img {
+            max-width: 100px;
+            border-radius: 5px;
+        }
+        .suggestion h3, .suggestion p {
+            margin: 10px 0;
+        }
+        .create-playlist-form {
+            margin-top: 20px;
+        }
+        .create-playlist-form input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 24px);
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .create-playlist-form button {
+            padding: 10px 20px;
+            background-color: #1db954;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .create-playlist-form button:hover {
+            background-color: #17a54a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #000;">Music Suggestions</h1>
+        <p style="color: #000;">Here are some tracks based on your prompt: <strong>{{ prompt }}</strong> and energy level: <strong>{{ energy_level }}</strong></p>
+        {% for suggestion in suggestions %}
+        <div class="suggestion">
+            <img src="{{ suggestion.image }}" alt="{{ suggestion.name }}">
+            <h3>{{ suggestion.name }}</h3>
+            <p>{{ suggestion.artist }}</p>
+        </div>
+        {% endfor %}
+        <form class="create-playlist-form" action="{{ url_for('create_playlist') }}" method="post">
+            <input type="hidden" name="suggestions" value='{{ suggestions | tojson | safe }}'>
+            <input type="text" name="playlist_name" placeholder="Enter playlist name" required>
+            <button type="submit">Create Playlist</button>
+        </form>
+    </div>
+</body>
+</html>

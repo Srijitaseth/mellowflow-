@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Energy Level</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1db954, #000000);  /* Uniform gradient from Spotify green to black */
+            color: #fff;  /* Default text color */
+            font-family: Arial, sans-serif;  /* Clean and simple font */
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);  /* Slightly transparent white background for the form */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);  /* Increased shadow for more contrast */
+            border-radius: 10px;
+        }
+        .container h1, .container p {
+            color: #000;  /* Black text color for heading and paragraph */
+        }
+        .energy-slider {
+            margin-top: 20px;
+        }
+        .energy-slider label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            font-size: 18px;
+        }
+        .energy-slider input {
+            width: 100%;
+        }
+        .energy-slider .energy-level-display {
+            margin-top: 10px;
+            font-size: 24px;
+            color: #000;  /* Black color for the energy level display */
+            font-weight: bold;
+        }
+        .explicit-filter {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .explicit-filter label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+        }
+        .explicit-filter input {
+            margin-right: 10px;
+        }
+        .explicit-filter input[type="checkbox"]:checked {
+            accent-color: #1db954;  /* Green color when checked */
+        }
+        .explicit-filter p {
+            color: #000;  /* Black text color for the explicit content filter description */
+        }
+        .submit-button {
+            margin-top: 20px;
+        }
+        .submit-button button {
+            padding: 10px 20px;
+            background-color: #1db954;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-button button:hover {
+            background-color: #17a54a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Prompt: {{ prompt }}</h1>
+        <p>Set the energy level for your playlist:</p>
+        <form action="{{ url_for('set_energy_level', prompt=prompt) }}" method="post">
+            <div class="energy-slider">
+                <label for="energy_level">Energy Level (0 to 100):</label>
+                <input type="range" id="energy_level" name="energy_level" min="0" max="100" value="50" step="1" />
+                <div class="energy-level-display">Energy Level: 50</div>
+            </div>
+            <div class="explicit-filter">
+                <label for="explicit_filter">
+                    <input type="checkbox" id="explicit_filter" name="explicit_filter" value="true">
+                    Explicit Content Filter
+                </label>
+                <p>Check this box to filter out explicit content for family-friendly playlists.</p>
+            </div>
+            <div class="submit-button">
+                <button type="submit">Generate Suggestions</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Get the energy level input and display elements
+        const energyLevelInput = document.getElementById('energy_level');
+        const energyLevelDisplay = document.querySelector('.energy-level-display');
+        
+        // Update the display value when the slider changes
+        energyLevelInput.addEventListener('input', function() {
+            energyLevelDisplay.textContent = `Energy Level: ${energyLevelInput.value}`;
+        });
+
+        // Initialize the display value with the current slider value
+        energyLevelDisplay.textContent = `Energy Level: ${energyLevelInput.value}`;
+    </script>
+</body>
+</html>

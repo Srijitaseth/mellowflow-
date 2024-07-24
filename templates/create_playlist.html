@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Created</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1e1e1e; /* Dark background color for contrast */
+            font-family: Arial, sans-serif; /* Use a clean and simple font */
+            color: #fff; /* White text color for better readability */
+        }
+        .message-container {
+            background: #1db954; /* Spotify green background */
+            color: #fff; /* White text color */
+            padding: 20px;
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            max-width: 400px;
+            text-align: center;
+            margin-top: 50px; /* Add margin to avoid crowding */
+        }
+        .message-container h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .message-container p {
+            margin: 0;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .message-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1ed760; /* Bright green button */
+            color: #fff; /* White text */
+            border-radius: 25px; /* Round button */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+        }
+        .message-container a:hover {
+            background-color: #1db954; /* Darker green on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #1db954; /* Spotify green */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .back-link:hover {
+            color: #17a54a; /* Slightly darker green */
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h2>Playlist Created Successfully!</h2>
+        <p>Your playlist has been created. Click the button below to view it on Spotify.</p>
+        <a href="{{ playlist_link }}" target="_blank">View Playlist</a>
+    </div>
+    <a href="{{ url_for('index') }}" class="back-link">Back to Search</a>
+</body>
+</html>

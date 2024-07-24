@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mellowflow</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Prevent scrolling */
+            position: relative;
+        }
+        
+        .background-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0; /* Ensure it stays behind other content */
+            background-size: cover;
+            background-repeat: no-repeat;
+            transition: background-image 1s ease-in-out;
+            filter: blur(10px); /* Apply blur effect */
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 1000px; /* Adjusted width to accommodate three images */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1; /* Ensure form and polaroids are above blurred background */
+        }
+        
+        .polaroid-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+            height: 300px; /* Maintain container height */
+        }
+        
+        .polaroid {
+            position: absolute;
+            width: 200px;
+            height: 300px;
+            margin: 0 5px; /* Reduced margin for smaller gap */
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden; /* Hide overflow content */
+            cursor: grab; /* Cursor indicates draggable element */
+            transition: transform 1s ease-in-out; /* 1-second transition */
+        }
+        
+        .polaroid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.5s ease; /* Smooth 0.5s color transition */
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const albumCovers = [
+                '{{ url_for("static", filename="album1.jpg") }}',
+                '{{ url_for("static", filename="album2.jpg") }}',
+                '{{ url_for("static", filename="album3.jpg") }}',
+                '{{ url_for("static", filename="album4.jpg") }}',
+                '{{ url_for("static", filename="album5.jpg") }}',
+                '{{ url_for("static", filename="album6.jpg") }}',
+                '{{ url_for("static", filename="album7.jpg") }}',
+                '{{ url_for("static", filename="album8.jpg") }}',
+                '{{ url_for("static", filename="album9.jpg") }}',
+                '{{ url_for("static", filename="album10.jpg") }}',
+                '{{ url_for("static", filename="album11.jpg") }}',
+                '{{ url_for("static", filename="album12.jpg") }}'
+            ];
+            let currentCoverIndex = 0;
+
+            const polaroids = document.querySelectorAll('.polaroid');
+            const backgroundBlur = document.querySelector('.background-blur');
+
+            function swipeNext() {
+                const prevIndex = currentCoverIndex;
+                currentCoverIndex = (currentCoverIndex + 1) % albumCovers.length;
+
+                // Update background image
+                const backgroundImage = `url(${albumCovers[currentCoverIndex]})`;
+                backgroundBlur.style.backgroundImage = backgroundImage;
+
+                // Update polaroid images
+                polaroids.forEach((polaroid, index) => {
+                    const imageIndex = (currentCoverIndex + index) % albumCovers.length;
+                    polaroid.querySelector('img').src = albumCovers[imageIndex];
+                    polaroid.style.transform = `translateX(${(index - 1) * 110}%)`; // Adjust spacing
+                });
+
+                // Schedule next swipe
+                setTimeout(swipeNext, 2000); // Swipe every 2 seconds
+            }
+
+            swipeNext(); // Start the swipe effect
+        });
+    </script>
+</head>
+<body>
+    <div class="background-blur"></div>
+    <div class="container">
+        <h1>Mellowflow</h1>
+        
+        <div class="polaroid-container">
+            <div class="polaroid">
+                <img src="{{ url_for('static', filename='album1.jpg') }}" alt="Album 1">
+            </div>
+            <div class="polaroid">
+                <img src="{{ url_for('static', filename='album2.jpg') }}" alt="Album 2">
+            </div>
+            <div class="polaroid">
+                <img src="{{ url_for('static', filename='album3.jpg') }}" alt="Album 3">
+            </div>
+        </div>
+        
+        <form action="/generate" method="post">
+            <input type="text" name="prompt" placeholder="Enter your prompt" required>
+            <button type="submit">Generate</button>
+        </form>
+        
+        <div id="generated-results">
+            <!-- Generated results will appear here -->
+        </div>
+    </div>
+</body>
+</html>
